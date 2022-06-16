@@ -6,8 +6,7 @@ Contents
       * [部署准备](#部署准备)
       * [部署步骤](#部署步骤)
         * [步骤 1: 部署 PostgreSQL Operator](#步骤-1-部署-postgresql-operator)
-        * [步骤 2: 部署 PGO 客户端](#步骤-2-部署-pgo-客户端)
-        * [步骤 3: 部署集群](#步骤-3-部署集群)
+        * [步骤 2: 部署集群](#步骤-2-部署集群)
       * [连接 RadonDB PostgreSQL](#连接-radondb-postgresql-集群)
         * [通过 psql 连接](#通过-psql-连接)
         * [通过 pgAdmin 连接](#通过-pgadmin-连接)
@@ -67,7 +66,7 @@ replicaset.apps/postgres-operator-cb9bf568   1         1         1       13d
  helm install demo .
 ```
 
-### 步骤 2: 部署 PGO 客户端
+### 步骤 2: 部署 PostgreSQL Cluster
 
 > **说明**
 > 
@@ -80,37 +79,7 @@ PGO 客户端是已编译的 `postgres-operator` 客户端工具，可在与 Kub
 - 向 PostgreSQL 集群添加其他实用程序
 - 集群备份与恢复
 
-1. 安装 PGO 客户端。
-
-   ```shell
-   curl https://raw.githubusercontent.com/radondb/radondb-postgresql-operator/main/installers/kubectl/client-setup.sh |bash
-   ```
-
-2. 设置环境变量，使其正常工作。
-
-   > **说明**
-   > 
-   > 以下参数，可根据实际情况修改。
-
-   ```shell
-   cat <<EOF >> ~/.bashrc
-   export PGOUSER="${HOME?}/.pgo/pgo/pgouser"
-   export PGO_CA_CERT="${HOME?}/.pgo/pgo/client.crt"
-   export PGO_CLIENT_CERT="${HOME?}/.pgo/pgo/client.crt"
-   export PGO_CLIENT_KEY="${HOME?}/.pgo/pgo/client.key"
-   export PGO_APISERVER_URL='https://127.0.0.1:8443'
-   export PGO_NAMESPACE=pgo
-   EOF
-   source ~/.bashrc
-   ```
-
-3. 转发 `svc/postgres-operator` 到本地。
-
-   ```shell
-   nohup kubectl port-forward --namespace pgo svc/postgres-operator 8443:8443  &>/dev/null &
-   ```
-
-### 步骤 3: 部署集群
+### 步骤 2: 部署集群
 
 1. 启用 PGO 客户端，创建集群。
 
